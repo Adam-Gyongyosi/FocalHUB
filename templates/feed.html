@@ -1,0 +1,95 @@
+{% extends 'FocalHUB/base.html' %}
+
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Gallery Section ======= -->
+    <div class="row" style="margin-top: 5em">
+     {% for post in posts %}
+    <section id="gallery" class="gallery col-xl-3 col-lg-4 col-md-6">
+      <div class="container">
+        <div class="row gy-4 justify-content-center">
+          <div class="">
+            <div class="gallery-item h-100">
+              <img src="{{ post.image.url }}" class="img-fluid" alt="">
+              <div class="gallery-links d-flex align-items-center justify-content-center">
+                <a href="{{ post.image.url }}" title="Uploader: {{ post.uploader.username }}  | Likes: {{ post.likes }} | Description: {{ post.description }}" class="glightbox preview-link"><i class="bi bi-arrows-angle-expand" style="color: green"></i></a>
+                {% if post.uploader != request.user %}
+                <form action="{% url 'like_post' post.id %}" method="POST" class="d-inline">
+                  {% csrf_token %}
+                  <button class="like-button btn btn-link" type="submit">
+                      <i class="bi bi-heart" style="color: green"></i>
+                  </button>
+                </form>
+                {% endif %}
+                 <a href="#" class="comment-button" data-bs-toggle="modal" data-bs-target="#commentModal{{ post.id }}"><i class="bi bi-chat" style="margin-left: 1em"></i></a>
+              </div>
+            </div>
+          </div>
+            <!-- End Gallery Item -->
+        </div>
+      </div>
+    </section>
+         <!-- End Gallery Section -->
+
+
+
+
+         <!-- Comment Modal -->
+        <div class="modal fade" id="commentModal{{ post.id }}" tabindex="-1" aria-labelledby="commentModalLabel{{ post.id }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content" style="color: black;background-color: #E5E4E2">
+              <div class="modal-header">
+                <h5 class="modal-title align-items-center" id="commentModalLabel{{ post.id }}">Post Comments</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              <h6>Previous Comments:</h6>
+                {% for comment in post.comment_set.all %}
+                <div class="card mb-2" style="background-color: #B2BEB5">
+                  <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                  <div class=" d-flex align-items-center justify-content-between">
+                    <p class="card-text">By: {{ comment.user.username }}</p>
+                      {% if request.user == post.uploader %}
+                    <form action="{% url 'deletecomment' comment.id %}" method="POST" class="d-inline">
+                      {% csrf_token %}
+                      <button class="delete-comment btn btn-link" type="submit">
+                        <i class="bi bi-trash" style="color: grey;"></i>
+                      </button>
+                    </form>
+                    {% endif %}
+                  </div>
+                  </div>
+                </div>
+                {% empty %}
+                <p>No comments yet.</p>
+                {% endfor %}
+
+                  <hr>
+
+                {% if user.is_authenticated %}
+                <!-- Comment Form -->
+                <form action="{% url 'writecomment' post.id %}" method="POST">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <textarea class="form-control" name="comment" rows="3" placeholder="Write your comment" style="background-color:#B2BEB5"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-outline-secondary btn-lg sbutton" style="background-color: #B2BEB5">Submit Comment</button>
+                </form>
+                {% else %}
+                <p>You must be logged in to leave a comment.</p>
+                {% endif %}
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+         <!-- End Comment Modal -->
+{% endfor %}
+    </div>
+
+  </main>
+{% endblock %}

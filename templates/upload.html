@@ -1,0 +1,29 @@
+{% extends 'FocalHUB/base.html' %}
+
+{% block content %}
+    <!--- File upload section -->
+  <main id="main">
+      <div class="container justify-content-center">
+        <h1 class="mb-2" style="margin-top: 3em">Upload Post</h1>
+          <hr>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="display: flex; align-items: center;">
+              <h5 class="m-4">Image:</h5>
+              <input type="file" id="image" name="image" required>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <h5 class="m-4">Write description (optional):</h5>
+              <input type="text" id="description" name="description" maxlength="100" placeholder="Max 100 characters" style="width:50%">
+            </div>
+            <div class="text-center">
+                <hr>
+              <input type="submit" class="btn btn-secondary btn-outline-secondary btn-lg mt-3" style="color: white" value="Upload">
+            </div>
+        </form>
+      </div>
+  </main>
+    <!--- End File upload section -->
+{% endblock %}
+
+

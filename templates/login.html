@@ -1,0 +1,64 @@
+{% extends 'FocalHUB/base.html' %}
+
+{% block content %}
+
+  <main id="main" >
+
+    <!--  Page Header  -->
+    <div class="page-header d-flex align-items-center">
+  <div class="container position-relative">
+    <div class="row d-flex justify-content-center">
+      <div class="col-lg-6 text-center">
+        <h2>Login</h2>
+        <p>Please log in into your account to share photos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+      <!-- End Page Header -->
+
+<!--  Content Section  -->
+<section>
+  <div class="container">
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-9">
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+
+              <!-- Username input -->
+              <div class="form-outline mb-4">
+                <label class="form-label text-white" for="loginName">Username</label>
+                <input type="username" name="{{ form.username.name }}" id="loginName" class="form-control" required>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <label class="form-label text-white" for="loginPassword">Password</label>
+                <input type="password" name="{{ form.password.name }}" id="loginPassword" class="form-control" required>
+              </div>
+
+              <!-- Submit button -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-block mb-4" style="background-color: #32a852; width: 100%; border: none;">Sign in</button>
+              </div>
+
+              <!-- Register buttons -->
+              <div class="text-center">
+                <p class="text-white">Not a member? <a href="{% url 'reg-page' %}" style="color: #32a852;">Register</a></p>
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+      <!-- End Content Section -->
+
+
+  </main>
+{% endblock %}

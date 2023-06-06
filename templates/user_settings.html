@@ -1,0 +1,70 @@
+{% extends 'FocalHUB/base.html' %}
+
+{% block content %}
+
+  <main id="main"  style="margin-top: 8em">
+
+    <!--  UserSetting Section -->
+     <section id="user-settings" class="user-settings">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>User Settings</h2>
+            <hr>
+            <div class="row">
+        <div class="col-lg-6">
+          <div class="mb-4">
+            <h4>Change Username</h4>
+            <form method="post" action='{% url 'usersettings' %}'  class="needs-validation" novalidate>
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="currentUsername">Current Username: {{ request.user }}</label>
+              </div>
+              <div class="form-group mt-3">
+                <label for="newUsername">New Username</label>
+                <input type="text" name="new_username" id="newUsername" class="form-control" required>
+              </div>
+              <div class="form-group mt-3">
+                <label for="password">Please write in your current password to change your username!</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-transparent btn-outline-secondary mt-3">Change Username</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+        <hr>
+
+          <h6>My Pictures</h6>
+        </div>
+
+        <div class="row">
+          {% if posts %}
+            {% for post in posts %}
+              <section id="gallery" class="gallery col-xl-3 col-lg-4 col-md-6">
+                  <div class="container">
+                    <div class="row gy-4 justify-content-center">
+                        <div class="gallery-item h-100">
+                          <img src="{{ post.image.url }}" class="img-fluid" alt="">
+                          <div class="gallery-links d-flex align-items-center justify-content-center">
+                            <form method="POST" action="{% url 'deletepicture' post.id %}">
+                              {% csrf_token %}
+                                <button type="submit" class="delete-btn btn-secondary"><i class="bi bi-trash"></i></button>
+                            </form>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+            {% endfor %}
+          {% else %}
+            <p>No pictures found.</p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+    <!-- End UserSetting Section -->
+
+  </main>
+{% endblock %}

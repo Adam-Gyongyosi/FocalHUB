@@ -1,0 +1,45 @@
+{% extends 'FocalHUB/base.html' %}
+
+{% block content %}
+
+  <main id="main">
+
+  <!-- selecting date period -->
+    <div class="container">
+      <div class="row justify-content-center" style="margin-top: 100px">
+        <div class="col-auto">
+          <form method="GET" action="{% url 'trending' %}">
+            <select name="period" class="form-select mt-5" onchange="this.form.submit()">
+                <option value="week" {% if request.GET.period == 'week' %}selected{% endif %}>Past Week</option>
+                <option value="month" {% if request.GET.period == 'month' %}selected{% endif %}>Past Month</option>
+                <option value="year" {% if request.GET.period == 'year' %}selected{% endif %}>Past Year</option>
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--  Gallery Section -->
+  <div class="row">
+        {% for post in posts %}
+        <section id="gallery" class="gallery col-xl-3 col-lg-4 col-md-6">
+          <div class="container">
+            <div class="row gy-4 justify-content-center">
+              <div class="">
+                <div class="gallery-item h-100">
+                  <img src="{{ post.image.url }}" class="img-fluid" alt="">
+                  <div class="gallery-links d-flex align-items-center justify-content-center">
+                    <a href="{{ post.image.url }}" title="Likes: {{ post.likes }}" class="glightbox preview-link"><i class="bi bi-arrows-angle-expand"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+            <!-- End Gallery Section -->
+        {% endfor %}
+    </div>
+
+  </main><!-- End #main -->
+
+{% endblock %}
